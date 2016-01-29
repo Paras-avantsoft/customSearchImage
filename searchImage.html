@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title>JSON/Atom Custom Search API Example</title>
+</head>
+
+<body>
+    <input type="text" id="searchField" style="height: 25px; width: 200px;" placeholder="Search"/>
+    <button onclick="searchImage()" style="height: 25px;">Search</button>
+    <div id="content">
+        <script>
+        function searchImage() {
+            var me = this,
+                inputEl = document.getElementById('searchField'),
+                value = inputEl.value,
+                xhttp = new XMLHttpRequest(),
+                url = 'https://www.googleapis.com/customsearch/v1?q=' + value + '&cx=008171334859300485105%3Axjnxxb8dxnk&filter=1&imgSize=small&num=10&searchType=image&fields=context%2Citems%2Ckind%2Cpromotions%2Cqueries%2CsearchInformation%2Cspelling%2Curl&key=AIzaSyDNUZTem7yknzqZuWrJfOGmDUERMi1J6KA';
+
+            xhttp.open('GET', url, true);
+            xhttp.onreadystatechange = function() {
+                debugger;
+                if (xhttp.readyState == XMLHttpRequest.DONE) {
+                    me.hndlr(xhttp.responseText);
+                }
+            };
+            xhttp.send();
+        }
+
+        function hndlr(response) {
+            var resText = JSON.parse(response);
+            if (!response.items) {
+                document.getElementById("content").innerHTML += 'No result found.';
+                return;
+            }
+            for (var i = 0; i < resText.items.length; i++) {
+                var item = resText.items[i];
+                console.log(item);
+                document.getElementById("content").innerHTML += '<div><img style="padding: 20px;border: 1px solid #e8e8e8;"src="' + item.link + '"></div><br><br>';
+            }
+        }
+        </script>
+</body>
+
+</html>
