@@ -13,13 +13,15 @@
             var me = this,
                 inputEl = document.getElementById('searchField'),
                 value = inputEl.value,
-                xhttp = new XMLHttpRequest(),
-                url = 'https://www.googleapis.com/customsearch/v1?q=' + value + '&cx=008171334859300485105%3Axjnxxb8dxnk&filter=1&imgSize=small&num=10&searchType=image&fields=context%2Citems%2Ckind%2Cpromotions%2Cqueries%2CsearchInformation%2Cspelling%2Curl&key=AIzaSyDNUZTem7yknzqZuWrJfOGmDUERMi1J6KA';
+                xhttp = new XMLHttpRequest();
 
-            xhttp.open('GET', url, true);
+            xhttp.open('GET', "http://192.168.2.8:4786/customsearch?q=" + value, true);
+
+            // xhttp.open('GET', url, true);
             xhttp.onreadystatechange = function() {
                 debugger;
                 if (xhttp.readyState == XMLHttpRequest.DONE) {
+                    console.log(xhttp.responseText);
                     me.hndlr(xhttp.responseText);
                 }
             };
@@ -28,8 +30,8 @@
 
         function hndlr(response) {
             var resText = JSON.parse(response);
-            if (!response.items) {
-                document.getElementById("content").innerHTML += 'No result found.';
+            if (!resText.items) {
+                document.getElementById("content").innerHTML = 'No result found.';
                 return;
             }
             for (var i = 0; i < resText.items.length; i++) {
